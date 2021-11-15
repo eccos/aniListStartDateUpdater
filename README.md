@@ -10,4 +10,4 @@ This only works for Anime. **Not Manga**. If there's enough interest for it, I'l
 2. Upload the exported XML to https://eccos.github.io/aniListStartDateUpdater/
 3. It should automatically download, but if not, hit the Download link
 4. At https://anilist.co/settings/import, check "Overwrite anime already on my list"
-5. Upload the downloaded file in step 3 "anilistStartDateUpdated.xml"
+5. Upload the downloaded file in step 3 "anilistAnimeUpdatedStartDate.xml"
