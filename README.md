@@ -1,5 +1,5 @@
 # aniListStartDateUpdater
-https://anilist.co doesn't count watched animes if start_date isn't set. See https://anilist.co/forum/thread/46480/1  
+https://anilist.co doesn't count watched animes if start_date isn't set. See https://anilist.co/forum/thread/46480  
 This sets start_date = finish_date using a MAL XML format
 
 ## Important
