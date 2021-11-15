@@ -1,5 +1,5 @@
 // Purpose: anilist.co doesn't count watched animes if start_date isn't set
-// Using MAL formatted XML anime list,
+// Using MAL XML format,
 // if an anime's start_date is invalid and finish_date is valid,
 // set start_date = finish_date
 

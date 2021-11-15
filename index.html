@@ -1,16 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AniList StartDate Updater</title>
 </head>
+
 <body>
+    <div>
+        <article>
+            <h1>aniList StartDate Updater</h1>
+            <p><a href="https://anilist.co" rel="nofollow">https://anilist.co</a> doesn't count watched animes if
+                start_date isn't set. See <a href="https://anilist.co/forum/thread/46480"
+                    rel="nofollow">https://anilist.co/forum/thread/46480</a><br>
+                This sets start_date = finish_date using a MAL XML format</p>
+            <h2>Important</h2>
+            <p>This only works for Anime. <strong>Not Manga</strong>.<br>
+                If there's enough interest for it, I'll add Manga functionality, if not, then someone else can fork my
+                code and make their own. <a
+                    href="https://github.com/eccos/aniListStartDateUpdater">https://github.com/eccos/aniListStartDateUpdater</a>
+            </p>
+            <h2>Steps</h2>
+            <ol>
+                <li>Export your anilist anime in the MAL XML format using an exporter, such as <a
+                        href="https://malscraper.azurewebsites.net/"
+                        rel="nofollow">https://malscraper.azurewebsites.net/</a> (Save this XML as a backup)</li>
+                <li>Upload the exported MAL XML here via the "Choose File" button below</li>
+                <li>It should automatically download, but if not, hit the Download link</li>
+                <li>At <a href="https://anilist.co/settings/import"
+                        rel="nofollow">https://anilist.co/settings/import</a>,
+                    check "Overwrite anime already on my list"</li>
+                <li>Upload the downloaded file in step 3 "anilistAnimeUpdatedStartDate.xml"</li>
+            </ol>
+        </article>
+    </div>
     <input type="file" id="xmlFileInput" accept="text/xml">
     <a id="xmlFileDownloadLink" style="visibility: hidden;">Download</a>
     <textarea id="xmlTextArea" style="visibility: hidden; vertical-align: top; height: 400px; width: 500px;"></textarea>
 
     <script src="startDateUpdater.js"></script>
 </body>
+
 </html>
