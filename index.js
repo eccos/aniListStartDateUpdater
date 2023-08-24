@@ -27,66 +27,48 @@ function handleFiles({ currentTarget }) {
     };
     fileReader.onload = () => {
         // read successful. pass content to parseXML()
-        parseXML(fileReader.result);
+        parseXmlStr(fileReader.result);
     };
 }
 
-// parses MAL formatted XML anime list
-function parseXML(file) {
+function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+}
+
+/**
+ * Parses an anime list in the MyAnimeList XML format.
+ * @param {string} xmlstr - String in the text/xml format
+ */
+function parseXmlStr(xmlstr) {
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(file, "text/xml");
+    const xmlDoc = parser.parseFromString(xmlstr, "text/xml");
     console.log(xmlDoc);
 
-    const aniList = xmlDoc.getElementsByTagName("anime");
+    const aniList = xmlDoc.querySelectorAll("anime");
+    // const aniList = xmlDoc.getElementsByTagName("anime");
     console.log(aniList);
 
-    // for each anime in list
-    for (let i = 0; i < aniList.length; i++) {
-        // get data list
-        const anime = aniList[i];
-        const aniDataList = anime.children;
-        let startDateIndex = null;
-        let startDate = "";
-        let finishDate = "";
-        // for each anime's data list
-        for (let j = 0; j < aniDataList.length; j++) {
-            // get each data field
-            const aniData = aniDataList[j];
-
-            if (aniData.tagName == "my_start_date") {
-                startDateIndex = j;
-                startDate = aniData.textContent;
-                const sDate = new Date(startDate);
-                if (sDate != "Invalid Date") {
-                    // if start date is valid, break out
-                    // only care to fix invalid start dates
-                    break;
-                }
-            }
-            if (aniData.tagName == "my_finish_date") {
-                finishDate = aniData.textContent;
-                const fDate = new Date(finishDate);
-                if (fDate == "Invalid Date") {
-                    // cannot fix start dates with invalid finish date
-                    // break out
-                    break;
-                }
-            }
-            if (startDate != "" && finishDate != "") {
-                // console.log(fDate);
-                const fDate = new Date(finishDate);
-                if (fDate != "Invalid Date") {
-                    // console.log("Valid " + fDate);
-                    aniList[i].children[startDateIndex].textContent = finishDate;
-                    console.log(i + " " + aniDataList[1].textContent);
-                } else {
-                    // console.log("Invalid");
-                }
-                // done with fix. break out
-                break;
-            }
+    aniList.forEach((anime) => {
+        if (anime.querySelector("my_status").textContent.toLowerCase() != "completed") {
+            return;
         }
-    }
+        const start = anime.querySelector("my_start_date");
+        const finish = anime.querySelector("my_finish_date")
+        const sdate = new Date(start.textContent);
+        const fdate = new Date(finish.textContent);
+
+        if ((isValidDate(sdate) && isValidDate(fdate)) || (!isValidDate(sdate) && !isValidDate(fdate))) {
+            return;
+        }
+
+        if (!isValidDate(sdate) && isValidDate(fdate)) {
+            start.textContent = finish.textContent;
+            return;
+        } else if (isValidDate(sdate) && !isValidDate(fdate)) {
+            finish.textContent = start.textContent;
+            return;
+        }
+    });
 
     // form new MAL formatted XML
     const s = new XMLSerializer();
