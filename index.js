@@ -3,7 +3,7 @@
 // if an anime's start_date is invalid and finish_date is valid,
 // set start_date = finish_date
 
-// was used to find out what valid/invalid dates return
+// find out what valid/invalid dates return
 // console.log(new Date("0000-00-00"));
 // console.log(new Date("2021-01-03"));
 
@@ -20,7 +20,7 @@ function handleFiles() {
     }
 
     // read file contents
-    let fileReader = new FileReader();
+    const fileReader = new FileReader();
     fileReader.readAsText(file);
     fileReader.onload = function () {
         // read successful. pass content to parseXML()
@@ -33,11 +33,11 @@ function handleFiles() {
 
 // parses MAL formatted XML anime list
 function parseXML(file) {
-    let parser = new DOMParser();
-    let xmlDoc = parser.parseFromString(file, "text/xml");
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(file, "text/xml");
     console.log(xmlDoc);
 
-    let aniList = xmlDoc.getElementsByTagName("anime");
+    const aniList = xmlDoc.getElementsByTagName("anime");
     console.log(aniList);
 
     // for each anime in list
@@ -56,7 +56,7 @@ function parseXML(file) {
             if (aniData.tagName == "my_start_date") {
                 startDateIndex = j;
                 startDate = aniData.textContent;
-                let sDate = new Date(startDate);
+                const sDate = new Date(startDate);
                 if (sDate != "Invalid Date") {
                     // if start date is valid, break out
                     // only care to fix invalid start dates
@@ -65,7 +65,7 @@ function parseXML(file) {
             }
             if (aniData.tagName == "my_finish_date") {
                 finishDate = aniData.textContent;
-                let fDate = new Date(finishDate);
+                const fDate = new Date(finishDate);
                 if (fDate == "Invalid Date") {
                     // cannot fix start dates with invalid finish date
                     // break out
@@ -74,7 +74,7 @@ function parseXML(file) {
             }
             if (startDate != "" && finishDate != "") {
                 // console.log(fDate);
-                let fDate = new Date(finishDate);
+                const fDate = new Date(finishDate);
                 if (fDate != "Invalid Date") {
                     // console.log("Valid " + fDate);
                     aniList[i].children[startDateIndex].textContent = finishDate;
@@ -89,13 +89,13 @@ function parseXML(file) {
     }
 
     // form new MAL formatted XML
-    let s = new XMLSerializer();
+    const s = new XMLSerializer();
 
     // form opening xml
     let newXmlDoc = `<?xml version="1.0" encoding="UTF-8" ?>
 <myanimelist>`;
     // append myinfo content (contains info about the user)
-    let myinfo = xmlDoc.getElementsByTagName("myinfo");
+    const myinfo = xmlDoc.getElementsByTagName("myinfo");
     for (let index = 0; index < myinfo.length; index++) {
         const element = myinfo[index];
         newXmlDoc += s.serializeToString(element);
@@ -114,8 +114,8 @@ function parseXML(file) {
     xmlTextArea.textContent = newXmlDoc;
 
     // create download link
-    let filename = "anilistAnimeUpdatedStartDate.xml";
-    let dlLink = document.getElementById("xmlFileDownloadLink");
+    const filename = "anilistAnimeUpdatedStartDate.xml";
+    const dlLink = document.getElementById("xmlFileDownloadLink");
     createDownload(filename, newXmlDoc, dlLink);
     dlLink.style.visibility = "visible";
 
@@ -125,7 +125,7 @@ function parseXML(file) {
 
 function createDownload(filename, text, element) {
     if (!element) {
-        element = document.createElement('a');
+        const element = document.createElement('a');
     }
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
@@ -133,7 +133,7 @@ function createDownload(filename, text, element) {
 }
 
 function autoDownload(filename, text) {
-    element = document.createElement('a');
+    const element = document.createElement('a');
     createDownload(filename, text, element);
     element.style.display = 'none';
     document.body.appendChild(element);
