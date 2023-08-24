@@ -8,26 +8,26 @@
 // console.log(new Date("2021-01-03"));
 
 // handles XML files
-const xmlFileInput = document.getElementById("xmlFileInput");
+const xmlFileInput = document.querySelector("#xmlFileInput");
 xmlFileInput.addEventListener("change", handleFiles, false);
-function handleFiles() {
-    const fileList = this.files; /* now you can work with the file list */
-    // only working with 1 file
-    const file = fileList[0];
-    if (file.type != "text/xml") {
-        console.log("File uploaded is not XML");
+function handleFiles({ currentTarget }) {
+    const fileList = currentTarget.files; // work with file list
+    const file = fileList[0]; // work with 1st file
+
+    if (!file || file.type != "text/xml") {
+        alert("File uploaded is not XML");
         return;
     }
 
     // read file contents
     const fileReader = new FileReader();
     fileReader.readAsText(file);
-    fileReader.onload = function () {
+    fileReader.onerror = () => {
+        alert(fileReader.error);
+    };
+    fileReader.onload = () => {
         // read successful. pass content to parseXML()
         parseXML(fileReader.result);
-    };
-    fileReader.onerror = function () {
-        alert(fileReader.error);
     };
 }
 
@@ -109,13 +109,13 @@ function parseXML(file) {
     newXmlDoc += `</myanimelist>`;
 
     // display new xml in textarea
-    const xmlTextArea = document.getElementById("xmlTextArea");
+    const xmlTextArea = document.querySelector("#xmlTextArea");
     xmlTextArea.style.visibility = "visible";
     xmlTextArea.textContent = newXmlDoc;
 
     // create download link
     const filename = "anilistAnimeUpdatedStartDate.xml";
-    const dlLink = document.getElementById("xmlFileDownloadLink");
+    const dlLink = document.querySelector("#xmlFileDownloadLink");
     createDownload(filename, newXmlDoc, dlLink);
     dlLink.style.visibility = "visible";
 
