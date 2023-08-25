@@ -8,8 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <style>
-        .hidden {
-            visibility: hidden;
+        .hidden,
+        .hidden-date {
+            display: none;
         }
 
         #xmlTextArea {
@@ -67,10 +68,10 @@
                     <h2>Upload MAL XML</h2>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="chkCreateFakeDate">
-                        <label class="form-check-label" for="chkCreateFakeDate">Create fake date if both dates
+                        <label class="form-check-label" for="chkCreateFakeDate">Create fake date if both dates are
                             invalid</label>
                     </div>
-                    <div class="mb-3 ">
+                    <div class="mb-3 hidden-date">
                         <label class="form-label" for="fakeDate">Date</label>
                         <input class="form-control" type="date" id="fakeDate">
                     </div>

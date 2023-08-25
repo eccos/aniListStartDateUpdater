@@ -5,11 +5,17 @@
 // if invalid start_date & valid finish_date, then start_date = finish_date, and vice versa
 
 const hiddenElems = document.querySelectorAll(".hidden");
+const hiddenDatePicker = document.querySelector(".hidden-date");
+const chkFakeDate = document.querySelector("#chkCreateFakeDate");
 const selectedDate = document.querySelector("#fakeDate");
 const xmlFileInput = document.querySelector("#xmlFileInput");
 const localeDateString = new Date().toLocaleDateString();
 
 selectedDate.valueAsDate = new Date(localeDateString);
+
+chkFakeDate.addEventListener("change", () => {
+    hiddenDatePicker.classList.toggle("hidden-date");
+});
 xmlFileInput.addEventListener("change", handleFiles, false);
 
 function handleFiles({ currentTarget }) {
