@@ -44,7 +44,8 @@ function parseXmlStr(xmlstr) {
     const aniList = xmlDoc.querySelectorAll("anime");
 
     aniList.forEach((anime) => {
-        if (anime.querySelector("my_status").textContent.toLowerCase() != "completed") {
+        const status = anime.querySelector("my_status").textContent.toLowerCase();
+        if (!["plan to watch", "watching", "dropped", "paused", "completed", "rewatching"].includes(status)) {
             return;
         }
         const start = anime.querySelector("my_start_date");
@@ -52,16 +53,36 @@ function parseXmlStr(xmlstr) {
         const sdate = new Date(start.textContent);
         const fdate = new Date(finish.textContent);
 
-        if ((isValidDate(sdate) && isValidDate(fdate)) || (!isValidDate(sdate) && !isValidDate(fdate))) {
-            return;
-        }
-
-        if (!isValidDate(sdate) && isValidDate(fdate)) {
-            start.textContent = finish.textContent;
-            return;
-        } else if (isValidDate(sdate) && !isValidDate(fdate)) {
-            finish.textContent = start.textContent;
-            return;
+        switch (status) {
+            case "plan to watch":
+                start.textContent = "0000-00-00";
+                finish.textContent = "0000-00-00";
+                break;
+            case "watching":
+            case "dropped":
+                finish.textContent = "0000-00-00";
+                break;
+            case "paused":
+                if (!isValidDate(sdate) && isValidDate(fdate)) {
+                    start.textContent = finish.textContent;
+                    return;
+                }
+                break;
+            case "completed":
+            case "rewatching":
+                // if ((isValidDate(sdate) && isValidDate(fdate)) || (!isValidDate(sdate) && !isValidDate(fdate))) {
+                //     return;
+                // } 
+                if (!isValidDate(sdate) && isValidDate(fdate)) {
+                    start.textContent = finish.textContent;
+                    return;
+                } else if (isValidDate(sdate) && !isValidDate(fdate)) {
+                    finish.textContent = start.textContent;
+                    return;
+                }
+                break;
+            default:
+                break;
         }
     });
 
