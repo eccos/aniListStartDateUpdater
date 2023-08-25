@@ -1,14 +1,13 @@
-// Purpose: anilist.co doesn't count watched animes if start_date isn't set
-// Using MAL XML format,
-// if an anime's start_date is invalid and finish_date is valid,
-// set start_date = finish_date
-
-// find out what valid/invalid dates return
-// console.log(new Date("0000-00-00"));
-// console.log(new Date("2021-01-03"));
+// issue: anilist.co doesn't count watched/completed animes if start_date isn't set
+// summary: app corrects invalid dates
+// details: app takes in a MyAnimeList XML file, then 
+// sets invalid dates to valid dates for all completed animes. for example, 
+// if invalid start_date & valid finish_date, then start_date = finish_date, and vice versa
 
 // handles XML files
+const hiddenElems = document.querySelectorAll(".hidden");
 const xmlFileInput = document.querySelector("#xmlFileInput");
+
 xmlFileInput.addEventListener("change", handleFiles, false);
 function handleFiles({ currentTarget }) {
     const fileList = currentTarget.files; // work with file list
@@ -42,11 +41,7 @@ function isValidDate(d) {
 function parseXmlStr(xmlstr) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlstr, "text/xml");
-    console.log(xmlDoc);
-
     const aniList = xmlDoc.querySelectorAll("anime");
-    // const aniList = xmlDoc.getElementsByTagName("anime");
-    console.log(aniList);
 
     aniList.forEach((anime) => {
         if (anime.querySelector("my_status").textContent.toLowerCase() != "completed") {
@@ -70,55 +65,29 @@ function parseXmlStr(xmlstr) {
         }
     });
 
-    // form new MAL formatted XML
-    const s = new XMLSerializer();
-
-    // form opening xml
-    let newXmlDoc = `<?xml version="1.0" encoding="UTF-8" ?>
-<myanimelist>`;
-    // append myinfo content (contains info about the user)
-    const myinfo = xmlDoc.getElementsByTagName("myinfo");
-    for (let index = 0; index < myinfo.length; index++) {
-        const element = myinfo[index];
-        newXmlDoc += s.serializeToString(element);
-    }
-    // append animes
-    for (let index = 0; index < aniList.length; index++) {
-        const element = aniList[index];
-        newXmlDoc += s.serializeToString(element);
-    }
-    // form closing xml
-    newXmlDoc += `</myanimelist>`;
-
-    // display new xml in textarea
+    const xmlStr = new XMLSerializer().serializeToString(xmlDoc);
     const xmlTextArea = document.querySelector("#xmlTextArea");
-    xmlTextArea.style.visibility = "visible";
-    xmlTextArea.textContent = newXmlDoc;
-
-    // create download link
     const filename = "anilistAnimeUpdatedStartDate.xml";
     const dlLink = document.querySelector("#xmlFileDownloadLink");
-    createDownload(filename, newXmlDoc, dlLink);
-    dlLink.style.visibility = "visible";
 
-    // auto download after file upload
-    autoDownload(filename, newXmlDoc);
+    xmlTextArea.textContent = xmlStr;
+    setLinkAttributes(dlLink, filename, xmlStr);
+    hiddenElems.forEach((elem) => {
+        elem.classList.remove("hidden");
+    });
+    autoDownload(filename, xmlStr);
 }
 
-function createDownload(filename, text, element) {
-    if (!element) {
-        const element = document.createElement('a');
-    }
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+function setLinkAttributes(element, filename, text) {
+    element.setAttribute('href', 'data:text/xml;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
-    return element;
 }
 
 function autoDownload(filename, text) {
-    const element = document.createElement('a');
-    createDownload(filename, text, element);
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    const link = document.createElement("a");
+    setLinkAttributes(link, filename, text);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
