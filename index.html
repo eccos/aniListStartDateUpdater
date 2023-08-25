@@ -65,11 +65,22 @@
             <div class="col-12 col-sm-6 col-lg-5">
                 <section id="upload">
                     <h2>Upload MAL XML</h2>
-                    <label for="xmlFileDownloadLink">Upload MAL XML</label>
-                    <input class="form-control" type="file" id="xmlFileInput" accept="text/xml"
-                        placeholder="scrape_anilistanime.xml">
-                    <div class="hidden">
-                        <label for="xmlTextArea">Updated XML</label>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="chkCreateFakeDate">
+                        <label class="form-check-label" for="chkCreateFakeDate">Create fake date if both dates
+                            invalid</label>
+                    </div>
+                    <div class="mb-3 ">
+                        <label class="form-label" for="fakeDate">Date</label>
+                        <input class="form-control" type="date" id="fakeDate">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="xmlFileDownloadLink">Upload MAL XML</label>
+                        <input class="form-control" type="file" id="xmlFileInput" accept="text/xml"
+                            placeholder="scrape_anilistanime.xml">
+                    </div>
+                    <div class="mb-3 hidden">
+                        <label class="form-label" for="xmlTextArea">Updated XML</label>
                         <a href="#" id="xmlFileDownloadLink">Download</a>
                         <textarea class="form-control" id="xmlTextArea"></textarea>
                     </div>

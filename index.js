@@ -4,11 +4,14 @@
 // sets invalid dates to valid dates for all completed animes. for example, 
 // if invalid start_date & valid finish_date, then start_date = finish_date, and vice versa
 
-// handles XML files
 const hiddenElems = document.querySelectorAll(".hidden");
+const selectedDate = document.querySelector("#fakeDate");
 const xmlFileInput = document.querySelector("#xmlFileInput");
+const localeDateString = new Date().toLocaleDateString();
 
+selectedDate.valueAsDate = new Date(localeDateString);
 xmlFileInput.addEventListener("change", handleFiles, false);
+
 function handleFiles({ currentTarget }) {
     const fileList = currentTarget.files; // work with file list
     const file = fileList[0]; // work with 1st file
