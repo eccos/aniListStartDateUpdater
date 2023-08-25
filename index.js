@@ -19,15 +19,14 @@ chkFakeDate.addEventListener("change", () => {
 xmlFileInput.addEventListener("change", handleFiles, false);
 
 function handleFiles({ currentTarget }) {
-    const fileList = currentTarget.files; // work with file list
-    const file = fileList[0]; // work with 1st file
+    const fileList = currentTarget.files;
+    const file = fileList[0];
 
     if (!file || file.type != "text/xml") {
         alert("File uploaded is not XML");
         return;
     }
 
-    // read file contents
     const fileReader = new FileReader();
     fileReader.readAsText(file);
     fileReader.onerror = () => {
@@ -61,6 +60,9 @@ function parseXmlStr(xmlstr) {
         const finish = anime.querySelector("my_finish_date")
         const sdate = new Date(start.textContent);
         const fdate = new Date(finish.textContent);
+        const sdateValidity = isValidDate(sdate);
+        const fdateValidity = isValidDate(fdate);
+        const fakedateValidity = isValidDate(new Date(selectedDate.value));
 
         switch (status) {
             case "plan to watch":
@@ -70,24 +72,32 @@ function parseXmlStr(xmlstr) {
             case "watching":
             case "dropped":
                 finish.textContent = "0000-00-00";
+                if (!sdateValidity &&
+                    chkFakeDate.checked && fakedateValidity) {
+                    start.textContent = selectedDate.value;
+                }
                 break;
             case "paused":
-                if (!isValidDate(sdate) && isValidDate(fdate)) {
+                if (!sdateValidity && fdateValidity) {
                     start.textContent = finish.textContent;
-                    return;
+                } else if (!sdateValidity && !fdateValidity &&
+                    chkFakeDate.checked && fakedateValidity) {
+                    start.textContent = selectedDate.value;
                 }
                 break;
             case "completed":
             case "rewatching":
-                // if ((isValidDate(sdate) && isValidDate(fdate)) || (!isValidDate(sdate) && !isValidDate(fdate))) {
+                // if ((sdateValidity && fdateValidity) || (!sdateValidity && !fdateValidity)) {
                 //     return;
                 // } 
-                if (!isValidDate(sdate) && isValidDate(fdate)) {
+                if (!sdateValidity && fdateValidity) {
                     start.textContent = finish.textContent;
-                    return;
-                } else if (isValidDate(sdate) && !isValidDate(fdate)) {
+                } else if (sdateValidity && !fdateValidity) {
                     finish.textContent = start.textContent;
-                    return;
+                } else if (!sdateValidity && !fdateValidity &&
+                    chkFakeDate.checked && fakedateValidity) {
+                    start.textContent = selectedDate.value;
+                    finish.textContent = selectedDate.value;
                 }
                 break;
             default:
