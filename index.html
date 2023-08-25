@@ -7,6 +7,14 @@
     <title>AniList StartDate Updater</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        .hidden {
+            visibility: hidden;
+        }
+        xmlTextArea {
+            height: 30em;
+        }
+    </style>
 </head>
 
 <body>
@@ -55,12 +63,10 @@
                     <label for="xmlFileDownloadLink">Upload MAL XML</label>
                     <input class="form-control" type="file" id="xmlFileInput" accept="text/xml"
                         placeholder="scrape_anilistanime.xml">
-                    <div style="visibility: hidden;">
+                    <div class="hidden">
                         <label for="xmlTextArea">Updated XML</label>
-                        <a href="#" id="xmlFileDownloadLink" style="visibility: hidden;">Download</a>
-                        <textarea class="form-control" id="xmlTextArea" style="height: 30em;"></textarea>
-                        <!-- <textarea id="xmlTextArea"
-                    style="visibility: hidden; vertical-align: top; height: 400px; width: 500px;"></textarea> -->
+                        <a href="#" id="xmlFileDownloadLink">Download</a>
+                        <textarea class="form-control" id="xmlTextArea"></textarea>
                     </div>
                 </section>
             </div>
