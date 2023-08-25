@@ -15,5 +15,4 @@ If there's enough interest for it, I'll add Manga functionality, if not, then so
   Select "List type: AniList Anime List" (Save the XML as a backup)
 2. Upload the exported MAL XML in the "Upload MAL XML" section 
 3. An updated XML "anilistAnimeUpdatedStartDate.xml" should automatically download, but if not, hit the Download link
-4. In [AniList's XML Importer](https://anilist.co/settings/import), check "Overwrite anime already on my list"
-5. Upload the downloaded file in step 3
+4. In [AniList's XML Importer](https://anilist.co/settings/import), check "Overwrite anime already on my list", then upload the downloaded file in step 3
