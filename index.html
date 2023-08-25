@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AniList StartDate Updater</title>
+    <title>AniList Date Updater</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <style>
         .hidden {
             visibility: hidden;
         }
+
         #xmlTextArea {
             height: 30em;
         }
@@ -22,11 +23,15 @@
         <div class="row">
             <div class="col-12 col-sm-6 col-lg-7">
                 <header>
-                    <h1>AniList StartDate Updater</h1>
-                    <p><a href="https://anilist.co">AniList</a> doesn't count watched animes if
-                        start_date isn't set. See <a href="https://anilist.co/forum/thread/46480">forum
-                            thread.</a><br>
-                        This website sets start_date = finish_date using a MAL XML format</p>
+                    <h1>AniList Date Updater</h1>
+                    <p><a href="https://anilist.co">AniList</a> doesn't count watched/completed animes if start_date
+                        isn't set. See <a href="https://anilist.co/forum/thread/46480">forum thread</a>. <br>
+                        This website corrects invalid dates. <br>
+                        It takes in a MyAnimeList XML file, then sets invalid dates to valid dates for all completed
+                        animes. <br>
+                        For example, if start_date is invalid & finish_date is valid, then start_date =
+                        finish_date, and vice versa.
+                    </p>
                 </header>
                 <section id="important">
                     <h2>Important</h2>
@@ -43,7 +48,7 @@
                         <li class="list-group-item">Export your AniList anime in the MAL XML format using an exporter,
                             such
                             as
-                            <a href="https://malscraper.azurewebsites.net/">MALScraper</a><br>
+                            <a href="https://malscraper.azurewebsites.net">MALScraper</a><br>
                             Select "List type: AniList Anime List" (Save the XML as a backup)
                         </li>
                         <li class="list-group-item">Upload the exported MAL XML in the "Upload MAL XML" section
